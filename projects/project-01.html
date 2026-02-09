@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NWF 项目 - 分析与方案整理</title>
+
+  <!-- ✅ 关键：直接复用你首页的统一样式 -->
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <!-- ✅ 少量“补丁样式”：只负责让项目页更像首页（暗色、卡片、图片展示、目录） -->
+  <style>
+    /* 统一明亮背景与分区（贴近首页风格） */
+    .page { padding: 28px 0 80px; }
+
+    /* 顶部项目 Hero：更像首页的 hero */
+    .project-hero {
+      margin-top: 18px;
+      padding: 28px;
+      border-radius: 16px;
+      background: var(--panel2);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+    }
+    .project-hero__top {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .crumbs { display:flex; gap:10px; align-items:center; }
+    .crumbs a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+    .crumbs a:hover { color: var(--fg); border-bottom-color: var(--fg); }
+    .badge {
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding: 4px 0;
+      border-radius: 0;
+      background: transparent;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .project-hero h1 {
+      margin: 10px 0 10px;
+      color: var(--fg);
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4.6vw, 48px);
+      line-height: 1.12;
+    }
+    .project-hero p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 72ch;
+    }
+
+    /* 页面目录（快速跳转） */
+    .toc {
+      margin-top: 18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    .toc a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 6px 0;
+      border-radius: 0;
+      background: transparent;
+      border-bottom: 1px solid var(--line);
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+    }
+    .toc a:hover { color: var(--fg); border-bottom-color: var(--fg); }
+
+    /* 区块标题与卡片（对齐首页的 section/card 气质） */
+    .block {
+      margin-top: 22px;
+      padding: 22px;
+      border-radius: 16px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+    }
+    .block h2 {
+      margin: 0 0 10px;
+      color: var(--fg);
+      font-size: 18px;
+      font-family: var(--font-display);
+      letter-spacing: .01em;
+    }
+    .muted { color: var(--muted); }
+
+    .grid-2 {
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+      align-items:start;
+      margin-top: 14px;
+    }
+    @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .cardx {
+      padding: 18px;
+      border-radius: 14px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+    }
+    .cardx h3 {
+      margin: 0 0 10px;
+      color: var(--fg);
+      font-size: 15px;
+    }
+    .cardx ul { margin: 0; padding-left: 18px; color: var(--muted); }
+    .cardx li { margin: 6px 0; }
+
+    /* 图表/图片容器：更“作品集”质感 */
+    figure { margin: 0; }
+    .media {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--panel);
+      border: 1px solid var(--line);
+    }
+    .media img {
+      width: 100%;
+      display: block;
+      height: auto;
+    }
+    .caption {
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: var(--panel2);
+    }
+    .placeholder {
+      padding: 42px 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* “方法”三卡：更统一 */
+    .cards {
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 900px) { .cards { grid-template-columns: 1fr; } }
+
+    /* 底部声明 */
+    .footerx {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ✅ 统一 Header（复用首页结构与类名） -->
+  <header class="header">
+    <div class="container header__inner">
+      <a class="logo" href="../index.html" aria-label="首页">
+        <span class="logo__mark" aria-hidden="true"></span>
+        <span class="logo__text">suki</span>
+      </a>
+
+      <nav class="nav" aria-label="主导航">
+        <a href="../index.html#work" class="nav__link" data-i18n data-en="Work">作品</a>
+        <a href="../index.html#contact" class="nav__link" data-i18n data-en="Contact">联系</a>
+        <button class="lang-toggle" type="button" data-lang-toggle>EN</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container page" id="main">
+    <!-- ✅ 项目 Hero（更像首页第一屏，但更克制） -->
+    <section class="project-hero" aria-label="项目概览">
+      <div class="project-hero__top">
+        <div class="crumbs">
+          <a href="../index.html#work" data-i18n data-en="← Back to projects">← 返回作品</a>
+          <span class="muted">/</span>
+          <span class="muted" data-i18n data-en="Project 01">Project 01</span>
+        </div>
+        <!-- 你之前说“不想定位自己”，这里不写角色，只写项目类型 -->
+        <span class="badge" data-i18n data-en="Analysis Project · Strategy Synthesis">分析项目 · 方案整理</span>
+      </div>
+
+      <h1 data-i18n data-en="NWF Employer Branding & Recruitment Strategy Optimization">NWF 雇主品牌与招聘战略优化</h1>
+      <p class="muted" data-i18n data-en="A business consulting project: benchmarking competitors, auditing channels, and mapping processes to identify key issues and actionable improvements.">
+        商学院商业咨询项目：基于竞品对标、渠道审计与流程映射，整理关键问题与可执行的改进路径。
+      </p>
+
+      <nav class="toc" aria-label="页面目录">
+        <a href="#challenge" data-i18n data-en="Background">背景</a>
+        <a href="#methodology" data-i18n data-en="Methodology">方法</a>
+        <a href="#insights" data-i18n data-en="Findings">发现</a>
+        <a href="#solution" data-i18n data-en="Roadmap">路线图</a>
+      </nav>
+    </section>
+
+    <!-- 2. 背景与挑战 -->
+    <section id="challenge" class="block" aria-label="背景与挑战">
+      <h2 data-i18n data-en="Background">背景</h2>
+      <div class="grid-2">
+        <div class="cardx">
+          <h3 data-i18n data-en="Client Overview">客户概况</h3>
+          <p class="muted" style="margin:0;" data-i18n data-en="Natures Way Foods (NWF) is a UK fresh food manufacturer serving major retail and foodservice clients. While stable in scale, employer awareness and recruitment reach lag behind competitors.">
+            Natures Way Foods（NWF）为英国生鲜食品制造商，服务多家大型零售与餐饮客户。
+            业务规模稳定，但作为雇主的对外认知与招聘触达存在差距。
+          </p>
+        </div>
+
+        <div class="cardx">
+          <h3 data-i18n data-en="Key Issues">主要问题</h3>
+          <div class="cn-olist">
+            <p data-i18n data-en="(1) High role turnover and drop-off in applicant conversion">（一）岗位流动率高，申请转化存在损耗</p>
+            <p data-i18n data-en="(2) Strong competition for talent against key peers">（二）与主要竞品的人才吸引形成竞争</p>
+            <p data-i18n data-en="(3) Low appeal to younger candidates in the sector">（三）对年轻候选人的行业吸引力不足</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 研究方法 -->
+    <section id="methodology" class="block" aria-label="研究方法">
+      <h2 data-i18n data-en="Methodology">方法</h2>
+      <p class="muted" style="margin:0 0 10px;" data-i18n data-en="Reusable frameworks to produce comparative insights and materials for discussion and reporting.">
+        使用可复用的分析框架，产出对比结论与材料，用于讨论与汇报。
+      </p>
+
+      <div class="cards">
+        <div class="cardx">
+          <h3 data-i18n data-en="Competitor Benchmarking">竞品对标</h3>
+          <p class="muted" style="margin:0;" data-i18n data-en="Compared channels and content strategies across six key competitors to identify gaps and transferable practices.">
+            对 6 家主要竞品的渠道与内容策略进行对比，整理差距与可借鉴做法。
+          </p>
+        </div>
+        <div class="cardx">
+          <h3 data-i18n data-en="Multi-channel Audit">多渠道审计</h3>
+          <p class="muted" style="margin:0;" data-i18n data-en="Reviewed SEO, social media, and reviews to build a structured issue list.">
+            覆盖 SEO、社交媒体、口碑评价等信息源，形成结构化问题清单。
+          </p>
+        </div>
+        <div class="cardx">
+          <h3 data-i18n data-en="Process Mapping">流程映射</h3>
+          <p class="muted" style="margin:0;" data-i18n data-en="Mapped the journey from discovery to application to locate friction and drop-off points.">
+            从“发现职位”到“提交申请”梳理路径，定位摩擦点与流失节点。
+          </p>
+        </div>
+        <div class="cardx">
+          <h3 data-i18n data-en="Data Scale">数据规模</h3>
+          <p class="muted" style="margin:0;" data-i18n data-en="Analyzed 500+ LinkedIn comments, identified 20+ emotional touchpoints, and studied six global leading competitors.">
+            深度解析 500+ 条 LinkedIn 用户评论，识别 20+ 个核心情绪触点，调研 6 家全球领军竞品。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 核心发现 -->
+    <section id="insights" class="block" aria-label="核心发现">
+      <h2 data-i18n data-en="Findings">发现</h2>
+
+      <!-- Insight 1 -->
+      <div class="grid-2" style="margin-top:14px;">
+        <figure class="media">
+          <!-- ✅ 你把这里换成你的图 -->
+          <!-- <img src="../image/figure-09-10.png" alt="社交媒体发帖量对比图"> -->
+         <img src="../image/nwf-social-benchmark.jpg" alt="NWF 社交媒体发帖量与内容形式对比图" loading="lazy">
+
+          <figcaption class="caption" data-i18n data-en="Fig 1: Social activity and content format comparison">图 1：社交媒体活跃度与内容形式对比</figcaption>
+        </figure>
+
+        <div class="cardx">
+          <h3 data-i18n data-en="Finding 1: Weak content and activity">发现 1：内容与活跃度偏弱</h3>
+          <div class="cn-olist">
+            <p data-i18n data-en="(1) Posting frequency is below key competitors">（一）发帖频率低于主要竞品，触达不足</p>
+            <p data-i18n data-en="(2) Low share of video and real-scene content">（二）视频/真实场景内容比例偏低</p>
+            <p data-i18n data-en="(3) Limited employee-perspective content and emotional resonance">（三）“员工视角”内容不足，情绪连接弱</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insight 2 -->
+      <div class="grid-2" style="margin-top:14px;">
+        <div class="cardx">
+          <h3 data-i18n data-en="Finding 2: Application path has friction">发现 2：申请路径存在门槛</h3>
+          <div class="cn-olist">
+            <p data-i18n data-en="(1) High cognitive load and operational friction">（一）流程中存在理解成本与操作摩擦</p>
+            <p data-i18n data-en="(2) Missed traffic due to weak generic keyword reach">（二）通用关键词触达不足，流量错失</p>
+            <p data-i18n data-en="(3) Experience is not friendly to diverse candidates">（三）对多样化候选人体验不够友好</p>
+          </div>
+        </div>
+
+        <figure class="media">
+          <!-- ✅ 你把这里换成你的图 -->
+          <!-- <img src="../image/figure-06.png" alt="流程映射或SWOT图"> -->
+        <img src="../image/nwf-swot.jpg" alt="NWF SWOT 与流程分析图" loading="lazy">
+
+          <figcaption class="caption" data-i18n data-en="Fig 2: Application journey mapping and pain-point diagnosis">图 2：申请流程映射与痛点定位</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 5. 解决方案路线图 -->
+    <section id="solution" class="block" aria-label="路线图">
+      <h2 data-i18n data-en="Roadmap">路线图</h2>
+      <p class="muted" style="margin:0 0 12px;" data-i18n data-en="Phase-based actions for fast start and continuous iteration.">
+        分阶段拆解可执行动作，便于快速启动与持续迭代。
+      </p>
+
+      <figure class="media" style="margin-top:14px;">
+        <!-- ✅ 你把这里换成你的大图 -->
+        <!-- <img src="../image/roadmap.png" alt="战略路线图全景"> -->
+       <img src="../image/nwf-strategic-roadmap.jpg" alt="NWF 战略实施路线图" loading="lazy">
+
+        <figcaption class="caption" data-i18n data-en="Fig 3: Strategic roadmap overview by phases">图 3：战略路线图全景（分阶段）</figcaption>
+      </figure>
+
+      <div class="grid-2" style="margin-top:14px;">
+        <div class="cardx">
+          <h3 data-i18n data-en="Short Term (1–3 months)">短期（1–3 个月）</h3>
+          <div class="cn-olist">
+            <p data-i18n data-en="(1) Content pilots: introduce real-scene short videos">（一）内容试点：引入真实场景短视频</p>
+            <p data-i18n data-en="(2) JD optimization: clarify keywords and value points">（二）JD 优化：关键词与卖点表达更清晰</p>
+          </div>
+        </div>
+        <div class="cardx">
+          <h3 data-i18n data-en="Mid Term (6–8 months)">中期（6–8 个月）</h3>
+          <div class="cn-olist">
+            <p data-i18n data-en="(1) Experience optimization: reduce cognitive load and friction">（一）体验优化：降低理解成本与流程摩擦</p>
+            <p data-i18n data-en="(2) Information page: consolidate benefits, culture, growth paths">（二）信息页完善：福利、文化、成长路径更集中</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cardx" style="margin-top:14px;">
+        <h3 data-i18n data-en="Long Term (1–2 years)">长期（1–2 年）</h3>
+        <div class="cn-olist">
+          <p data-i18n data-en="(1) Talent pipeline: build early career development paths">（一）人才管道：建立早期职业发展通道</p>
+          <p data-i18n data-en="(2) Employer assets: build reusable narratives and assets">（二）雇主资产：沉淀可复用的表达与素材体系</p>
+        </div>
+      </div>
+
+      <div class="block" style="margin-top:14px;">
+        <h2 data-i18n data-en="If you are interested in my analytical approach...">如果你对我的逻辑拆解能力感兴趣...</h2>
+        <a class="link" href="../projects/project-02.html" data-i18n data-en="View another project: AWS × India Retail →">查看另一个项目：AWS × 印度零售 →</a>
+      </div>
+
+      <div class="footerx">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;">
+          <span>© <span id="year"></span> suki · Academic Portfolio</span>
+          <a href="../index.html#work" style="color:var(--muted); text-decoration:none;" data-i18n data-en="Back to projects">返回作品列表</a>
+        </div>
+        <div class="footerx__note" data-i18n data-en="This page is for learning and personal showcase only; it does not represent any official stance.">
+          本页面用于学习与个人展示；不代表企业官方立场。
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    // 平滑滚动（与首页一致）
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener("click", (e) => {
+        const id = a.getAttribute("href");
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  </script>
+  <script src="../js/lang.js"></script>
+</body>
+</html>
