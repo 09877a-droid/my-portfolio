@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Storefront | sukii.me</title>
+
+  <!-- Base Styles -->
+  <link rel="stylesheet" href="../css/style.css" />
+
+  <!-- Storefront Specific Styles matching the reference -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+    body {
+      background-color: #F9F7F2; /* Creamy off-white as requested and matching reference */
+      color: #2C2C2C;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Transparent Header overlaid on Hero */
+    .store-header {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 10;
+      padding: 20px 5%;
+      display: flex;
+      justify-content: space-between;
+      color: white;
+    }
+    .store-header a {
+      color: white; text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px;
+    }
+    .store-logo { font-family: 'Playfair Display', serif; font-size: 24px; font-style: italic; }
+    .store-nav { display: flex; gap: 24px; align-items: center; }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 80vh;
+      width: 100%;
+      background: url('../image/project-04-cover.jpg') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.4); z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+    }
+    .hero-icon {
+      font-size: 32px; margin-bottom: 12px; font-family: 'Playfair Display', serif; color: #E8E5DF;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 48px);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 400;
+      margin: 0;
+    }
+    .hero-subtitle {
+      font-size: 14px; letter-spacing: 1px; margin-top: 16px; font-weight: 300;
+    }
+    .hero-date {
+      font-size: 11px; letter-spacing: 2px; margin-top: 24px; opacity: 0.7;
+    }
+
+    /* 3 Banners Section */
+    .triple-banners {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      height: 250px;
+      width: 100%;
+    }
+    @media (max-width: 800px) { .triple-banners { grid-template-columns: 1fr; height: 600px; } }
+    .banner {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+    }
+    .banner::before {
+      content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.3); transition: background 300ms;
+    }
+    .banner:hover::before { background: rgba(0,0,0,0.5); }
+    .banner h3 { position: relative; z-index: 2; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 400; margin: 0 0 12px; }
+    .banner span { position: relative; z-index: 2; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; border: 1px solid white; padding: 6px 16px; border-radius: 20px; }
+
+    /* Section Headers */
+    .section-title {
+      text-align: center;
+      margin: 80px 0 40px;
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #666;
+      position: relative;
+    }
+    .section-title::before, .section-title::after {
+      content: ''; position: absolute; top: 50%; width: 100px; height: 1px; background: #DDD;
+    }
+    .section-title::before { left: 50%; transform: translateX(-180px); }
+    .section-title::after { right: 50%; transform: translateX(180px); }
+
+    /* Popular Categories Layout */
+    .categories {
+      max-width: 1100px; margin: 0 auto; padding: 0 20px;
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px;
+      height: 400px;
+    }
+    @media (max-width: 800px) { .categories { grid-template-columns: 1fr; height: auto; } }
+    .cat-large {
+      position: relative; height: 100%; min-height: 200px;
+      background: url('../image/project-04-cover.jpg') center/cover;
+    }
+    .cat-small-col { display: grid; grid-template-rows: 1fr 1fr; gap: 20px; height: 100%; }
+    .cat-small {
+      position: relative; height: 100%; min-height: 190px;
+    }
+    .cat-s1 { background: url('../image/product-1.jpg') center/cover; }
+    .cat-s2 { background: url('../image/project-04-texture.jpg') center/cover; }
+    .cat-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-family: 'Playfair Display', serif; font-size: 20px; letter-spacing: 2px;
+      cursor: pointer; transition: background 300ms;
+    }
+    .cat-overlay:hover { background: rgba(0,0,0,0.5); }
+
+    /* Popular Picks / Product Grid */
+    .product-grid {
+      max-width: 1100px; margin: 0 auto 80px; padding: 0 20px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;
+    }
+    @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 500px) { .product-grid { grid-template-columns: 1fr; } }
+
+    .product-card {
+      text-decoration: none; color: inherit; display: block; position: relative;
+    }
+    .product-card:hover .product-img { transform: scale(1.02); }
+    .product-img-wrapper {
+      width: 100%; aspect-ratio: 1; background: #FFF; margin-bottom: 20px;
+      overflow: hidden; display:flex; align-items:center; justify-content:center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+    .product-img {
+      width: 90%; height: 90%; object-fit: contain; transition: transform 400ms ease;
+    }
+    .product-meta { font-size: 10px; text-transform: uppercase; color: #888; letter-spacing: 1px; margin-bottom: 6px; }
+    .product-title { font-size: 14px; font-weight: 500; font-family: 'Inter', sans-serif; color: #4A8CBA; margin: 0 0 4px; }
+    .product-stars { color: #8B4513; font-size: 12px; margin-bottom: 6px; letter-spacing: 2px;}
+    .product-price { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+    .product-specs { font-size: 11px; color: #888; line-height: 1.5; }
+    
+    .footer-store {
+      text-align: center; padding: 40px 20px; border-top: 1px solid rgba(0,0,0,0.1); font-size: 12px; color: #888; margin-top: 60px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="store-header">
+    <a href="../index.html" class="store-logo">sukii.me</a>
+    <nav class="store-nav">
+      <a href="../index.html#work">Portfolio</a>
+      <a href="#">Shop Online</a>
+      <a href="#">About</a>
+      <a href="#">Basket(0)</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-icon">བཀྲ་ཤིས་བདེ་ལེགས།</div>
+      <h1 class="hero-title">Highland Motif</h1>
+      <p class="hero-subtitle">The beauty of Tibetan culture, through a piece of paper.</p>
+      <div class="hero-date">SINCE 2026</div>
+    </div>
+  </section>
+
+  <!-- Triple Banners -->
+  <section class="triple-banners">
+    <a href="#picks" class="banner" style="background-image: url('../image/product-1.jpg');">
+      <h3>Artisan Postcards</h3>
+      <span>Shop Online</span>
+    </a>
+    <a href="#" class="banner" style="background-image: url('../image/project-04-texture.jpg');">
+      <h3>Mindful Living</h3>
+      <span>Journals & Incense</span>
+    </a>
+    <a href="#" class="banner" style="background-image: url('../image/product-2.jpg');">
+      <h3>Offline Pop-up</h3>
+      <span>Find Us at UK Markets</span>
+    </a>
+  </section>
+
+  <!-- Categories -->
+  <div class="section-title">POPULAR CATEGORIES</div>
+  <section class="categories">
+    <div class="cat-large">
+      <div class="cat-overlay">TIBETAN POSTCARDS</div>
+    </div>
+    <div class="cat-small-col">
+      <div class="cat-small cat-s1"><div class="cat-overlay">GIFT BUNDLES</div></div>
+      <div class="cat-small cat-s2"><div class="cat-overlay">LIFESTYLE GOODS</div></div>
+    </div>
+  </section>
+
+  <!-- Popular Picks / Product Grid -->
+  <div class="section-title" id="picks">POPULAR PICKS</div>
+  <section class="product-grid">
+    
+    <!-- Item 1 -->
+    <a href="product-detail.html" class="product-card">
+      <div class="product-img-wrapper">
+        <img src="../image/product-1.jpg" alt="Lotus Postcard" class="product-img">
+      </div>
+      <div class="product-meta">STEEL BLUE MOTIF</div>
+      <h3 class="product-title">Tibetan Lotus Postcard</h3>
+      <div class="product-stars">★★★★★</div>
+      <div class="product-price">£12.00 - £27.00</div>
+      <div class="product-specs">
+        Origin: Lhasa, Tibet<br>
+        Aroma: Paper & Ink<br>
+        Colour: Steel Blue
+      </div>
+    </a>
+
+    <!-- Item 2 -->
+    <a href="product-detail.html" class="product-card">
+      <div class="product-img-wrapper">
+        <img src="../image/product-2.jpg" alt="Mandala Postcard" class="product-img">
+      </div>
+      <div class="product-meta">SADDLE BROWN MOTIF</div>
+      <h3 class="product-title">Handmade Mandala Print</h3>
+      <div class="product-stars">★★★★★</div>
+      <div class="product-price">£15.00 - £35.00</div>
+      <div class="product-specs">
+        Origin: Shigatse, Tibet<br>
+        Aroma: Earth & Wood<br>
+        Colour: Saddle Brown
+      </div>
+    </a>
+
+    <!-- Item 3 -->
+    <a href="product-detail.html" class="product-card">
+      <div class="product-img-wrapper" style="background:#E8E5DF;">
+        <img src="../image/project-04-cover.jpg" alt="Gift Set" class="product-img" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="product-meta">PREMIUM PACK</div>
+      <h3 class="product-title">Highland Motif Gift Set</h3>
+      <div class="product-stars">★★★★★</div>
+      <div class="product-price">£45.00</div>
+      <div class="product-specs">
+        Origin: London Design<br>
+        Items: 10 Cards + Envelopes<br>
+        Colour: Mixed
+      </div>
+    </a>
+
+    <!-- Item 4 -->
+    <a href="product-detail.html" class="product-card">
+      <div class="product-img-wrapper">
+        <img src="../image/project-04-texture.jpg" alt="Minimalist Poster" class="product-img" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="product-meta">ART PAPER</div>
+      <h3 class="product-title">Textured Lotus Poster</h3>
+      <div class="product-stars">★★★★★</div>
+      <div class="product-price">£28.00</div>
+      <div class="product-specs">
+        Origin: Lhasa, Tibet<br>
+        Material: 300g Cotton Paper<br>
+        Colour: Off-White
+      </div>
+    </a>
+
+  </section>
+
+  <footer class="footer-store">
+    © <span id="year"></span> sukii.me Retail Mockup. All Rights Reserved.
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
