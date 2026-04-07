@@ -227,6 +227,43 @@
       </div>
     </section>
 
+    <!-- 附加模块：产品/商品展示 -->
+    <section class="section" id="product" aria-label="产品">
+      <div class="section__head">
+        <h2 class="section__title" data-i18n data-en="Featured Product">特别推荐</h2>
+        <p class="section__desc" data-i18n data-en="Premium analytical toolkit and templates.">精选分析工具包与模版，立即获取。</p>
+      </div>
+
+      <div class="worklist">
+        <article class="workcard workcard--featured">
+          <a class="workcard__media" href="#" aria-label="查看商品">
+            <img src="image/product.png" alt="商品图片" loading="lazy" />
+          </a>
+
+          <div class="workcard__body">
+            <p class="workcard__eyebrow" data-i18n data-en="Digital Product">数字商品</p>
+            <h3 class="workcard__title" data-i18n data-en="Nexus Analytics Toolkit">全能业务分析工具包</h3>
+            <span class="workcard__micro" data-i18n data-en="PREMIUM TEMPLATE">PREMIUM TEMPLATE</span>
+            <p class="workcard__text" data-i18n data-en="A comprehensive suite of tools for business analysis, product strategy, and market research.">
+              包含商业分析、产品策略、竞品调研的全套结构化模板。开箱即用，提升思考效率。
+            </p>
+
+            <div class="chips" aria-label="商品标签">
+              <span class="chip" data-i18n data-en="Template">模版</span>
+              <span class="chip" data-i18n data-en="Tools">工具</span>
+              <span class="chip" data-i18n data-en="Efficiency">效率</span>
+            </div>
+            
+            <div style="margin-top: 1.5rem;">
+              <button class="btn btn--primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 0.5rem;" onclick="document.getElementById('payment-modal').classList.add('is-active')">
+                <span data-i18n data-en="Buy Now - £79.00">立即购买 - £79.00</span>
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <!-- 到这里为止：这是“关于我”之前的全部内容 -->
   </main>
 
@@ -264,5 +301,67 @@
     </div>
   </section>
   <script src="js/lang.js"></script>
+
+  <!-- 支付弹窗 (Payment Modal) -->
+  <div class="modal-overlay" id="payment-modal">
+    <div class="payment-modal stripe-modal">
+      <button class="payment-modal__close" onclick="document.getElementById('payment-modal').classList.remove('is-active')" aria-label="关闭">&times;</button>
+      
+      <div class="stripe-modal__header">
+        <h3 class="stripe-modal__title">Nexus Analytics Toolkit</h3>
+        <p class="stripe-modal__price">£79.00</p>
+      </div>
+
+      <div class="stripe-modal__body">
+        <button class="stripe-apple-pay" type="button" onclick="alert('This is a simulated Apple Pay flow. Actual payment requires a backend payment processor like Stripe.')">
+          <svg viewBox="0 0 54 22" style="height: 18px; fill: white;"><path d="M26.2.2c-.4-.2-1-.2-1.3-.2-3.1 0-5.3 1.9-5.3 5 0 .2 0 .4.1.5 1.5.1 3.5-.8 4.4-2.1.4-.7.7-1.4.7-2.1 0-.4-.1-.8-.2-1.1-.1 0-.2 0-.4 0zM26.9 6.2c-1.3-.1-2.8.6-3.6.6-.7 0-2.3-.6-3.4-.6-2.6 0-4.7 1.7-5.8 3.9-2.3 4.4-1.2 10.9 1 14.1 1.1 1.6 2.3 3.3 4.1 3.2 1.7-.1 2.4-1.1 4.4-1.1 2.1 0 2.7 1.1 4.5 1.1 1.8.1 2.8-1.5 3.9-3.1 1.3-1.8 1.8-3.6 1.8-3.7-.1 0-3.5-1.3-3.6-5.3-.1-3.3 2.8-4.9 2.9-5-1.5-2.1-3.9-2.4-4.8-2.5 0 0 0 0 0 0-.1 0-.9-1.6-1.5-1.6zM42.2 1.9c-.8 0-1.7.3-2.3.9-1.4 1.3-1.6 3.4-1.6 3.4h2v11H38v-11h-1.3V4.3H38V3.1c0-2 .8-3.1 2.9-3.1h1.4v1.9h-.1zM48 11.2c0-1.8 1.2-3.2 2.9-3.2 1.3 0 2.2.8 2.7 1.9l-1.8.7c-.2-.6-.6-.9-1-.9-1.1 0-1.7.9-1.7 2h4.5c0-.1 0-.2 0-.3 0-2.6-1.6-4.2-3.5-4.2-2 0-3.9 1.6-3.9 4.3 0 2.4 1.7 4.1 3.9 4.1 1.8 0 3-.9 3.6-2.3l-1.6-.7c-.3.7-.9 1.2-1.8 1.2-.9.1-2-.5-2.3-1.6h4.5v-1zM11.6 1.6H7.1v9.8H4V1.6H0L.3 0h11.3v1.6zM15 9c-.2-.2-.5-.3-.9-.3-1 0-1.7 1-1.7 2s.7 2 1.7 2c.4 0 .7-.1.9-.3V9zM19.1 8c-.6-1-1.7-1.4-2.8-1.4-2 0-3.8 1.6-3.8 4s1.8 4 3.8 4c1 0 2-.4 2.6-1.2v1h1.9v-11h-1.8L19.1 8zM52.3 9.4l1.7-5.1h-2l-1.2 4-1.2-4h-2l2.3 6.6-1.1 3H51l1.3-4.5zM52.3 9.4zM47.9 10.3c.3-.4.8-.8 1.5-.8.5 0 1 .3 1.2.7h-2.7zM16.1 10.6c0-1.4-.7-2.5-2-2.5-1.2 0-2 1.1-2 2.5 0 1.4.8 2.5 2 2.5 1.3.1 2-1 2-2.5z"></path></svg>
+        </button>
+
+        <div class="stripe-divider">
+          <span>Or pay with card</span>
+        </div>
+
+        <form class="stripe-form" onsubmit="event.preventDefault(); alert('This is a simulated checkout. Actual payment processing requires a backend like Stripe.');">
+          <div class="stripe-group">
+            <label class="stripe-label">Email</label>
+            <input type="email" class="stripe-input" placeholder="you@example.com" required>
+          </div>
+
+          <div class="stripe-group">
+            <label class="stripe-label">Card information</label>
+            <div class="stripe-card-input">
+              <input type="text" class="stripe-input stripe-input--top" placeholder="Card number" required>
+              <div class="stripe-card-input-row">
+                <input type="text" class="stripe-input stripe-input--bottom-left" placeholder="MM / YY" required>
+                <input type="text" class="stripe-input stripe-input--bottom-right" placeholder="CVC" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="stripe-group">
+            <label class="stripe-label">Name on card</label>
+            <input type="text" class="stripe-input" required>
+          </div>
+
+          <div class="stripe-group">
+            <label class="stripe-label">Country or region</label>
+            <select class="stripe-input stripe-select">
+              <option value="UK">United Kingdom</option>
+              <option value="US">United States</option>
+              <option value="EU">European Union</option>
+              <option value="CN">China</option>
+              <option value="AU">Australia</option>
+            </select>
+          </div>
+
+          <button class="stripe-submit" type="submit">Pay £79.00</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Payment specific logic can be added here
+  </script>
 </body>
 </html>

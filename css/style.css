@@ -773,3 +773,91 @@ img{max-width:100%;display:block}
   .footer-dark-section__grid{grid-template-columns:1fr}
   .footer-dark-section__grid--three{grid-template-columns:1fr}
 }
+
+/* =======================
+   Payment Modal
+======================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden;
+  transition: opacity 200ms ease, visibility 200ms ease;
+}
+.modal-overlay.is-active {
+  opacity: 1; visibility: visible;
+}
+.modal-overlay.is-active .payment-modal {
+  transform: translateY(0) scale(1);
+}
+.payment-modal {
+  background: var(--bg);
+  width: 90%; max-width: 480px;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  position: relative;
+  box-shadow: var(--shadow);
+  transform: translateY(20px) scale(0.95);
+  transition: transform 200ms ease;
+}
+.payment-modal__close {
+  position: absolute;
+  top: 16px; right: 16px;
+  background: transparent; border: 0;
+  font-size: 24px; cursor: pointer; color: var(--muted);
+  line-height: 1;
+}
+.payment-modal__close:hover { color: var(--fg); }
+/* Checkout Modal (Stripe Style) */
+.stripe-modal__header {
+  text-align: center; margin-bottom: 24px; pointer-events: none;
+}
+.stripe-modal__title {
+  margin: 0 0 8px; font-size: 16px; font-weight: 500; color: var(--muted);
+}
+.stripe-modal__price {
+  margin: 0; font-size: 36px; font-weight: 700; font-family: var(--font-display);
+}
+.stripe-apple-pay {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: #000; color: #fff; border: 0; border-radius: 8px;
+  padding: 14px; cursor: pointer; transition: opacity 200ms; margin-bottom: 24px;
+}
+.stripe-apple-pay:hover { opacity: 0.8; }
+.stripe-divider {
+  display: flex; align-items: center; text-align: center; margin-bottom: 24px;
+}
+.stripe-divider::before, .stripe-divider::after {
+  content: ''; flex: 1; border-bottom: 1px solid var(--line);
+}
+.stripe-divider span {
+  padding: 0 14px; color: var(--muted); font-size: 14px; font-weight: 500;
+}
+.stripe-form { display: flex; flex-direction: column; gap: 18px; }
+.stripe-group { display: flex; flex-direction: column; gap: 8px; }
+.stripe-label { font-size: 14px; font-weight: 500; color: var(--fg); }
+.stripe-input {
+  width: 100%; padding: 14px; font-size: 15px;
+  border: 1px solid var(--line); border-radius: 8px;
+  background: var(--panel); color: var(--fg);
+  font-family: inherit; transition: border-color 200ms;
+}
+.stripe-input:focus { outline: none; border-color: var(--fg); }
+.stripe-card-input { display: flex; flex-direction: column; }
+.stripe-card-input .stripe-input { border-radius: 0; margin-top: -1px; }
+.stripe-input--top { border-radius: 8px 8px 0 0 !important; }
+.stripe-card-input-row { display: flex; width: 100%; }
+.stripe-input--bottom-left { border-radius: 0 0 0 8px !important; width: 50%; }
+.stripe-input--bottom-right { border-radius: 0 0 8px 0 !important; width: 50%; margin-left: -1px; }
+.stripe-select { appearance: none; cursor: pointer; }
+.stripe-submit {
+  width: 100%; background: var(--fg); color: var(--bg);
+  border: 0; border-radius: 8px; padding: 16px; font-size: 16px; font-weight: 600;
+  cursor: pointer; margin-top: 12px; transition: opacity 200ms;
+}
+.stripe-submit:hover { opacity: 0.8; }
+
