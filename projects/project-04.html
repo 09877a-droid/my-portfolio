@@ -297,6 +297,229 @@
   <footer class="footer-store">
     © <span id="year"></span> sukii.me Retail Mockup. All Rights Reserved.
   </footer>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+  <!-- Narrative HTML (Entrance) -->
+  <div id="narrative-layer" onclick="flipPage()">
+    <div class="narrative-book-container">
+      <div class="narrative-book" id="narrative-book">
+        
+        <!-- Page 1 (Visible Top) -->
+        <div class="narrative-page" style="z-index: 103;">
+          <div class="page-face face-front">
+            <img src="../image/product-1.jpg" class="narrative-img" alt="Lotus">
+            <div class="narrative-overlay-text">
+              <h2 class="narrative-h2">高地的回声</h2>
+              <p class="narrative-p">一件意义深远的文化遗产，就在你手中。</p>
+            </div>
+          </div>
+          <div class="page-face face-back"></div>
+        </div>
+
+        <!-- Page 2 (Middle) -->
+        <div class="narrative-page" style="z-index: 102;">
+          <div class="page-face face-front">
+            <img src="../image/project-04-texture.jpg" class="narrative-img" alt="Texture">
+            <div class="narrative-overlay-text">
+              <h2 class="narrative-h2">指尖上的呼吸</h2>
+              <p class="narrative-p">在 300g 棉纸上触碰传承的分量。</p>
+            </div>
+          </div>
+          <div class="page-face face-back"></div>
+        </div>
+
+        <!-- Page 3 (Deepest) -->
+        <div class="narrative-page" style="z-index: 101;">
+          <div class="page-face face-front">
+            <div class="narrative-overlay-text" style="color: #2C2C2C; text-shadow: none;">
+              <h2 class="narrative-h2" style="font-style: italic;">Heritage Retold</h2>
+              <p class="narrative-p">古老智慧的现代翻译。</p>
+              <div style="margin-top: 60px; font-size: clamp(40px, 8vw, 80px); color: #8B4513;">བཀྲ་ཤིས་བདེ་ལེགས།</div>
+            </div>
+          </div>
+          <div class="page-face face-back"></div>
+        </div>
+
+      </div>
+    </div>
+    <div class="flip-hint">点击屏幕任意位置进入商店</div>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Narrative Logic
+    let currentPage = 0;
+
+    function flipPage() {
+      const pages = document.querySelectorAll('.narrative-page');
+      const narrativeLayer = document.getElementById('narrative-layer');
+      
+      if (currentPage < pages.length - 1) {
+        pages[currentPage].classList.add('flipped');
+        currentPage++;
+      } else {
+        narrativeLayer.classList.add('exit-narrative');
+        document.body.style.overflow = 'auto';
+        
+        // Reveal storefront components
+        const storefrontElms = [
+          document.querySelector('.store-header'),
+          document.querySelector('.hero'),
+          document.querySelector('.triple-banners'),
+          document.querySelector('.categories'),
+          ...document.querySelectorAll('.section-title'),
+          document.querySelector('.product-grid'),
+          document.querySelector('.footer-store')
+        ];
+        
+        storefrontElms.forEach(elm => { if(elm) elm.classList.add('reveal-store'); });
+        
+        setTimeout(() => {
+          narrativeLayer.style.display = 'none';
+        }, 800);
+      }
+    }
+
+    // Auto-lock scroll initially
+    document.body.style.overflow = 'hidden';
+  </script>
+
+  <!-- Narrative CSS (Injected) -->
+  <style>
+    #narrative-layer {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: #F9F7F2;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1), opacity 800ms;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    #narrative-layer.exit-narrative {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    .narrative-book-container {
+      perspective: 3000px;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .narrative-book {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+    .narrative-page {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      transform-origin: left center;
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      box-shadow: 10px 0 50px rgba(0,0,0,0.1);
+      background: #F9F7F2;
+    }
+
+    .narrative-page.flipped {
+      transform: rotateY(-180deg);
+    }
+
+    .page-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10%;
+      overflow: hidden;
+    }
+
+    .face-front {
+      z-index: 2;
+    }
+
+    .face-back {
+      transform: rotateY(180deg);
+      background: #E8E5DF; 
+    }
+
+    .narrative-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+    }
+
+    .narrative-overlay-text {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      color: #FFF;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.5);
+      max-width: 800px;
+      user-select: none;
+    }
+
+    .narrative-h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 10vw, 90px);
+      margin-bottom: 24px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .narrative-p {
+      font-size: clamp(12px, 3vw, 20px);
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .flip-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      color: rgba(255,255,255,0.7);
+      z-index: 1000;
+      animation: pulse 2s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* Storefront Reveal Logic */
+    .store-header, .hero, .triple-banners, .categories, .section-title, .product-grid, .footer-store {
+      opacity: 0;
+      transition: opacity 1.5s;
+    }
+    .reveal-store {
+      opacity: 1 !important;
+    }
+  </style>
 </body>
 </html>
