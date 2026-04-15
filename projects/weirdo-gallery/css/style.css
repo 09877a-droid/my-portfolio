@@ -1,0 +1,94 @@
+:root { 
+    --wood: #4e342e; 
+    --bg: #0a0a0a; 
+    --card-white: #ffffff;
+    --weirdo-pink: #f098a8;
+    --weirdo-outline: #d07888;
+}
+
+body { 
+    background: var(--bg); 
+    color: #ddd; 
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; 
+    margin: 0; 
+    padding: 80px 20px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 { 
+    color: var(--weirdo-pink); 
+    font-family: 'Gaegu', cursive;
+    font-size: 3em; 
+    letter-spacing: 12px; 
+    margin-bottom: 70px;
+    font-weight: 700;
+}
+
+
+
+/* 画廊网格 */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 60px;
+    width: 100%;
+    max-width: 1400px;
+    padding-bottom: 100px;
+}
+
+/* 艺术画框 */
+.project-card {
+    background: var(--card-white);
+    padding: 30px;
+    border: 20px solid var(--wood);
+    box-shadow: 0 40px 90px rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column;
+}
+
+.svg-container { 
+    width: 100%; 
+    aspect-ratio: 1 / 1;
+    background: #f8f8f8;
+    position: relative;
+    cursor: crosshair;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+/* 全局手绘风格滤镜应用 */
+.character-svg { 
+    filter: url(#global-refined-hand); 
+    width: 100%; 
+    height: 100%; 
+}
+
+.info {
+    margin-top: 25px;
+    color: #1a1a1a;
+    border-top: 2px solid #f0f0f0;
+    padding-top: 20px;
+}
+.info h3 { margin: 0; font-size: 1.25em; font-weight: 600; letter-spacing: 1px; }
+.info p { margin: 8px 0 0; font-size: 0.8em; color: #999; font-family: 'Courier New', monospace; }
+
+/* 闭眼/交互逻辑 */
+.eye-group { cursor: pointer; }
+.eye-closed { display: none; }
+.is-closed .eye-open { display: none; }
+.is-closed .eye-closed { display: block; }
+
+/* #05 双人独立控制状态 */
+.is-closed-bg .bg-eye-open { display: none; }
+.is-closed-bg .bg-eye-closed { display: block; }
+.bg-eye-closed { display: none; }
+.is-closed-fg .fg-eye-open { display: none; }
+.is-closed-fg .fg-eye-closed { display: block; }
+.fg-eye-closed { display: none; }
+
+/* 瞳孔动画丝滑度 */
+.pupil, .pupil-fg, .pupil-bg {
+    transition: transform 0.1s ease-out;
+}

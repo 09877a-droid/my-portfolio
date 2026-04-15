@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEirdo POST</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <h1>WEirdo POST</h1>
+
+    <div class="gallery" id="main-gallery">
+        <!-- 由 js/script.js 动态注入 -->
+    </div>
+
+    <!-- 全局SVG滤镜定义（精细手绘质感） -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="global-refined-hand">
+                <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" />
+            </filter>
+        </defs>
+    </svg>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
