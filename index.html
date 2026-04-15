@@ -260,10 +260,10 @@
               <span class="chip" data-i18n data-en="Strategy">商业策划</span>
             </div>
 
-            <a class="link" href="projects/project-04.html" data-i18n data-en="View Project Brief →">查看完整项目方案 →</a>
+            <a class="link" href="#" onclick="event.preventDefault(); var p=prompt('请输入密码 / Enter password:'); if(p==='suki'){window.location.href='projects/project-04.html';}else if(p!==null){alert('密码错误 / Wrong password');}" data-i18n data-en="View Project Brief →">查看完整项目方案 →</a>
           </div>
 
-          <a class="workcard__media" href="projects/project-04.html" aria-label="打开项目">
+          <a class="workcard__media" href="#" onclick="event.preventDefault(); var p=prompt('请输入密码 / Enter password:'); if(p==='suki'){window.location.href='projects/project-04.html';}else if(p!==null){alert('密码错误 / Wrong password');}" aria-label="打开项目">
             <img style="width: 100%; aspect-ratio: 16/10; object-fit: cover;" src="image/project-04-cover.jpg" alt="项目封面" loading="lazy" />
           </a>
         </article>
@@ -333,42 +333,6 @@
       </div>
     </section>
 
-    <!-- 附加模块：产品/商品展示 -->
-    <section class="section" id="product" aria-label="产品">
-      <div class="section__head">
-        <h2 class="section__title" data-i18n data-en="Featured Product">特别推荐</h2>
-        <p class="section__desc" data-i18n data-en="Premium analytical toolkit and templates.">精选分析工具包与模版，立即获取。</p>
-      </div>
-
-      <div class="worklist">
-        <article class="workcard workcard--featured">
-          <a class="workcard__media" href="#" aria-label="查看商品">
-            <img src="image/product.png" alt="商品图片" loading="lazy" />
-          </a>
-
-          <div class="workcard__body">
-            <p class="workcard__eyebrow" data-i18n data-en="Digital Product">数字商品</p>
-            <h3 class="workcard__title" data-i18n data-en="Nexus Analytics Toolkit">全能业务分析工具包</h3>
-            <span class="workcard__micro" data-i18n data-en="PREMIUM TEMPLATE">PREMIUM TEMPLATE</span>
-            <p class="workcard__text" data-i18n data-en="A comprehensive suite of tools for business analysis, product strategy, and market research.">
-              包含商业分析、产品策略、竞品调研的全套结构化模板。开箱即用，提升思考效率。
-            </p>
-
-            <div class="chips" aria-label="商品标签">
-              <span class="chip" data-i18n data-en="Template">模版</span>
-              <span class="chip" data-i18n data-en="Tools">工具</span>
-              <span class="chip" data-i18n data-en="Efficiency">效率</span>
-            </div>
-            
-            <div style="margin-top: 1.5rem;">
-              <button class="btn btn--primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 0.5rem;" onclick="document.getElementById('payment-modal').classList.add('is-active')">
-                <span data-i18n data-en="Buy Now - £79.00">立即购买 - £79.00</span>
-              </button>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
 
     <!-- 到这里为止：这是“关于我”之前的全部内容 -->
   </main>
